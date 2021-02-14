@@ -16,3 +16,7 @@ Automated home garden using hydroponics concepts
 * PH meter - DIYmore pH Sensor PH-4502C (https://www.aliexpress.com/item/32957428276.html)
   * Instructions: https://www.youtube.com/watch?v=zUEl3Y3yKL4&ab_channel=ElectronicClinic / https://www.electroniclinic.com/ph-meter-arduino-ph-meter-calibration-diymore-ph-sensor-arduino-code/ / https://cimpleo.com/blog/simple-arduino-ph-meter/ / https://scidle.com/how-to-use-a-ph-sensor-with-arduino/
   * Pins: V (Can be used with 5V and 3.3V compatible controller boards), GND, GND, Po (PH analog output), Do (3.3V pH limit trigger), To (analog temperature output)
+
+## Schematics
+
+![Schematics](hydroponics_schematic_bb.png?raw=true "Schematics")
