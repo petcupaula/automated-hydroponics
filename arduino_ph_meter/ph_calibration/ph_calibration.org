@@ -1,0 +1,52 @@
+# PH Calibration
+
+pH were measured according to this schema.
+
+
+#+NAME: ph
+| Substance       |   pH | Voltage |
+|-----------------+------+---------|
+| Vinegar         |  2.5 |    3.39 |
+| Caustic Soda    | 12.5 |    1.51 |
+| Distilled Water |  7.0 |    2.71 |
+
+A linear regression was performed to calculate offset and
+coefficient.
+
+#+begin_src R :exports all :var ph=ph :results output :session *R*
+  regr <- lm(pH ~ Voltage, ph)
+  summary(regr)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+
+Call:
+lm(formula = pH ~ Voltage, data = ph)
+
+Residuals:
+      1       2       3 
+-0.3664 -0.2076  0.5740 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)  
+(Intercept)  20.6120     1.4031  14.691   0.0433 *
+Voltage      -5.2347     0.5288  -9.898   0.0641 .
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.7119 on 1 degrees of freedom
+Multiple R-squared:  0.9899,	Adjusted R-squared:  0.9798 
+F-statistic: 97.98 on 1 and 1 DF,  p-value: 0.0641
+#+end_example
+
+And finally the regression is compared to the measured values.
+
+#+begin_src R :exports all :results output graphics :session *R*  :file ph.png
+  plot(ph$Voltage, ph$pH, xlab="Voltage", ylab="pH")
+  abline(regr)
+#+end_src
+
+#+RESULTS:
+
+[[file:ph.png]]
