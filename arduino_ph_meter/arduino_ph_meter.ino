@@ -1,6 +1,9 @@
 int phpin_value; 
 int vplus = 5; //5V provided to the module
-float calibration_value = 21.34 + 0.20;
+
+// Derived from ph_calibration/ph_calibration.org
+float ph_offset = 20.61
+float ph_coefficient = -5.23
 
 void setup() 
 { 
@@ -8,15 +11,11 @@ void setup()
 } 
 
 float ph(int val) {
-  return val * 14.0 / 1023.0;
-}
-
-float ph_adj(int val) {
-  return -5.70 * voltage(val) + calibration_value;
+  return  ph_coefficient* voltage(val) + ph_offset;
 }
 
 float voltage(int val) {
-  return val * vplus / 1023.0; 
+  return val * vplus / 1024.0; 
 }
 
 void loop() 
@@ -25,8 +24,7 @@ void loop()
   Serial.print("V: ");
   Serial.print(voltage(phpin_value));
   //Serial.print(" pH: ");
-  //Serial.print(ph(phpin_value));
-  Serial.print(" pH adj: ");
-  Serial.println(ph_adj(phpin_value));
+  Serial.print(" pH: ");
+  Serial.println(ph(phpin_value));
   delay(500); 
 }
