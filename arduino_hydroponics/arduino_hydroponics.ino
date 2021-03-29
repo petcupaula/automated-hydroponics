@@ -94,8 +94,13 @@ void loop()
 {
 
   // Wait a few seconds between measurements.
-  delay(5000);
+  // delay(5000);
   
+  if (Serial.available() > 0) {
+      String data = Serial.readStringUntil('\n');
+      //Serial.print("You sent me (string): ");
+      //Serial.println(data);
+
   getDHT();
   getUltrasonic();
   getColors();
@@ -161,6 +166,7 @@ void loop()
 
   Serial.println("");
 }
+}
 
 
 void getUltrasonic() {
@@ -182,8 +188,8 @@ void getUltrasonic() {
   // but /2 because sound has at this point traveled towards and back from the object
   distance = duration * 0.034 / 2;
   
-  Serial.print("Distance (cm): ");
-  Serial.println(distance);
+  Serial.print(", Distance (cm): ");
+  Serial.print(distance);
 }
 
 void getDHT() {
@@ -195,61 +201,60 @@ void getDHT() {
 
   // Check if any reads failed and exit early (to try again).
   if (isnan(h) || isnan(t)) {
-    Serial.println(F("Failed to read from DHT sensor!"));
+    //Serial.println(F("Failed to read from DHT sensor!"));
     return;
   }
 
   temperature = t;
 
-  Serial.print(F("Humidity: "));
+  Serial.print(F("Humidity (%): "));
   Serial.print(h);
-  Serial.print(F("%  Temperature: "));
-  Serial.print(t);
-  Serial.println(F("°C "));  
+  Serial.print(F(", Temperature (C): "));
+  Serial.print(t);  
 }
 
 void getColors() {
   // Read all channels at the same time and store in as7341 object
   if (!as7341.readAllChannels()){
-    Serial.println("Error reading all channels!");
+    //Serial.println("Error reading all channels!");
     return;
   }
 
   // Print out the stored values for each channel
-  Serial.print("F1 415nm (Violet): ");
-  Serial.println(as7341.getChannel(AS7341_CHANNEL_415nm_F1));
-  Serial.print("F2 445nm (Indigo): ");
-  Serial.println(as7341.getChannel(AS7341_CHANNEL_445nm_F2));
-  Serial.print("F3 480nm (Blue): ");
-  Serial.println(as7341.getChannel(AS7341_CHANNEL_480nm_F3));
-  Serial.print("F4 515nm (Cyan): ");
-  Serial.println(as7341.getChannel(AS7341_CHANNEL_515nm_F4));
-  Serial.print("F5 555nm (Green): ");
-  Serial.println(as7341.getChannel(AS7341_CHANNEL_555nm_F5));
-  Serial.print("F6 590nm (Yellow): ");
-  Serial.println(as7341.getChannel(AS7341_CHANNEL_590nm_F6));
-  Serial.print("F7 630nm (Orange): ");
-  Serial.println(as7341.getChannel(AS7341_CHANNEL_630nm_F7));
-  Serial.print("F8 680nm (Red): ");
-  Serial.println(as7341.getChannel(AS7341_CHANNEL_680nm_F8));
-  Serial.print("Clear    : ");
-  Serial.println(as7341.getChannel(AS7341_CHANNEL_CLEAR));
-  Serial.print("Near IR  : ");
-  Serial.println(as7341.getChannel(AS7341_CHANNEL_NIR));
+  Serial.print(", F1 415nm (Violet): ");
+  Serial.print(as7341.getChannel(AS7341_CHANNEL_415nm_F1));
+  Serial.print(", F2 445nm (Indigo): ");
+  Serial.print(as7341.getChannel(AS7341_CHANNEL_445nm_F2));
+  Serial.print(", F3 480nm (Blue): ");
+  Serial.print(as7341.getChannel(AS7341_CHANNEL_480nm_F3));
+  Serial.print(", F4 515nm (Cyan): ");
+  Serial.print(as7341.getChannel(AS7341_CHANNEL_515nm_F4));
+  Serial.print(", F5 555nm (Green): ");
+  Serial.print(as7341.getChannel(AS7341_CHANNEL_555nm_F5));
+  Serial.print(", F6 590nm (Yellow): ");
+  Serial.print(as7341.getChannel(AS7341_CHANNEL_590nm_F6));
+  Serial.print(", F7 630nm (Orange): ");
+  Serial.print(as7341.getChannel(AS7341_CHANNEL_630nm_F7));
+  Serial.print(", F8 680nm (Red): ");
+  Serial.print(as7341.getChannel(AS7341_CHANNEL_680nm_F8));
+  Serial.print(", Clear: ");
+  Serial.print(as7341.getChannel(AS7341_CHANNEL_CLEAR));
+  Serial.print(", Near IR: ");
+  Serial.print(as7341.getChannel(AS7341_CHANNEL_NIR));
 }
 
 void getTDS() {
   gravityTds.setTemperature(temperature);  // set the temperature and execute temperature compensation
   gravityTds.update();  //sample and calculate 
   tdsValue = gravityTds.getTdsValue();  // then get the value
-  Serial.print("TDS: V: ");
+  Serial.print(", TDS_V: ");
   Serial.print(voltage(analogRead(TDSPIN),vplusTDS));
-  Serial.print(", Vref: ");
+  Serial.print(", TDS_Vref: ");
   Serial.print(vplusTDS);
-  Serial.print(", aSteps: ");
+  Serial.print(", TDS_aSteps: ");
   Serial.print(adcRef,0);
   Serial.print(", PPM: ");
-  Serial.println(tdsValue);
+  Serial.print(tdsValue);
 }
 
 
@@ -263,14 +268,14 @@ float voltage(int val, int vRef) {
 
 void getPH() {
   phpin_value = analogRead(PHPIN); 
-  Serial.print("pH: V: ");
+  Serial.print(", pH_V: ");
   Serial.print(voltage(phpin_value, vplusPH));
-  Serial.print(", Vref: ");
+  Serial.print(", pH_Vref: ");
   Serial.print(vplusPH);
-  Serial.print(", aSteps: ");
+  Serial.print(", ph_aSteps: ");
   Serial.print(adcRef,0);
   Serial.print(", pH: ");
-  Serial.println(ph(phpin_value));
+  Serial.print(ph(phpin_value));
 }
 
 void turnFanOn() {
