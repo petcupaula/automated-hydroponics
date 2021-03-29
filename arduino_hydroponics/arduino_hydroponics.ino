@@ -33,6 +33,26 @@ float ph_coefficient = -5.72;//-5.23;
 
 float adcRef = 1024.0;
 
+// Fan
+#define FANPIN 10
+bool fanOn = false;
+
+// Grow lights
+#define LIGHTPIN 11
+bool lightsOn = false;
+
+// Water atomizer
+#define ATOMPIN 2
+bool waterAtomOn = false;
+
+// Air pump
+#define AIRPIN 12
+bool airPumpOn = false;
+
+// Water pump
+#define WATERPIN 13
+bool waterPumpOn = false;
+
 void setup()
 {
   Serial.begin(9600);
@@ -52,7 +72,21 @@ void setup()
   gravityTds.setAdcRange(adcRef);
   gravityTds.begin();
 
-  Serial.println("");
+  pinMode(FANPIN, OUTPUT);
+  turnFanOff();
+  
+  pinMode(LIGHTPIN, OUTPUT);
+  turnLightsOff();
+
+  pinMode(ATOMPIN, OUTPUT);
+
+  pinMode(AIRPIN, OUTPUT);
+  turnAirPumpOff();
+  
+  pinMode(WATERPIN, OUTPUT);
+  turnWaterPumpOff();
+
+  Serial.println("Starting...");
   
 }
 
@@ -60,13 +94,70 @@ void loop()
 {
 
   // Wait a few seconds between measurements.
-  delay(2000);
+  delay(5000);
   
   getDHT();
   getUltrasonic();
   getColors();
   getTDS();
   getPH();
+
+  if(temperature>22) {
+    if (fanOn == false) {
+      turnFanOn();
+    }
+  }
+  else {
+    if (fanOn == true) {
+      turnFanOff();
+      
+    }
+  }
+
+//  if(distance>5) {
+//    if (lightsOn == false) {
+//      turnLightsOn();
+//    }
+//  }
+//  else {
+//    if (lightsOn == true) {
+//      turnLightsOff();
+//    }
+//  }
+
+
+//  if(distance>5) {
+//    if (waterAtomOn == false) {
+//      turnWaterAtomOn();
+//    }
+//  }
+//  else {
+//    if (waterAtomOn == true) {
+//      turnWaterAtomOff();
+//    }
+//  }
+
+//  if(distance>5) {
+//    if (airPumpOn == false) {
+//      turnAirPumpOn();
+//    }
+//  }
+//  else {
+//    if (airPumpOn == true) {
+//      turnAirPumpOff();
+//    }
+//  }
+
+//  if(distance>5) {
+//    if (waterPumpOn == false) {
+//      turnWaterPumpOn();
+//    }
+//  }
+//  else {
+//    if (waterPumpOn == true) {
+//      turnWaterPumpOff();
+//    }
+//  }
 
   Serial.println("");
 }
@@ -180,4 +271,54 @@ void getPH() {
   Serial.print(adcRef,0);
   Serial.print(", pH: ");
   Serial.println(ph(phpin_value));
+}
+
+void turnFanOn() {
+  digitalWrite(FANPIN, LOW);
+  fanOn = true;
+}
+
+void turnFanOff() {
+  digitalWrite(FANPIN, HIGH);
+  fanOn = false;
+}
+
+void turnLightsOn() {
+  digitalWrite(LIGHTPIN, LOW);
+  lightsOn = true;
+}
+
+void turnLightsOff() {
+  digitalWrite(LIGHTPIN, HIGH);
+  lightsOn = false;
+}
+
+void turnWaterAtomOn() {
+  digitalWrite(ATOMPIN, HIGH);
+  waterAtomOn = true;
+}
+
+void turnWaterAtomOff() {
+  digitalWrite(ATOMPIN, LOW);
+  waterAtomOn = false;
+}
+
+void turnAirPumpOn() {
+  digitalWrite(AIRPIN, LOW);
+  airPumpOn = true;
+}
+
+void turnAirPumpOff() {
+  digitalWrite(AIRPIN, HIGH);
+  airPumpOn = false;
+}
+
+void turnWaterPumpOn() {
+  digitalWrite(WATERPIN, LOW);
+  waterPumpOn = true;
+}
+
+void turnWaterPumpOff() {
+  digitalWrite(WATERPIN, HIGH);
+  waterPumpOn = false;
 }
