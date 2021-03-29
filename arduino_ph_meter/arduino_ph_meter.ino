@@ -3,8 +3,8 @@ int vplus = 5; //5V provided to the module
 int samples = 10;
 
 // Derived from ph_calibration/ph_calibration.org
-float ph_offset = 20.61;
-float ph_coefficient = -5.23;
+float ph_offset = 21.34;//20.61;
+float ph_coefficient = -5.72;//-5.23;
 
 void setup() 
 { 
