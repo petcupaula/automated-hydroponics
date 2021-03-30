@@ -86,7 +86,7 @@ void setup()
   pinMode(WATERPIN, OUTPUT);
   turnWaterPumpOff();
 
-  Serial.println("Starting...");
+  //Serial.println("Starting...");
   
 }
 
@@ -101,23 +101,24 @@ void loop()
       //Serial.print("You sent me (string): ");
       //Serial.println(data);
 
+  Serial.print("{");
   getDHT();
   getUltrasonic();
   getColors();
   getTDS();
   getPH();
 
-  if(temperature>22) {
-    if (fanOn == false) {
-      turnFanOn();
-    }
-  }
-  else {
-    if (fanOn == true) {
-      turnFanOff();
-      
-    }
-  }
+//  if(temperature>22) {
+//    if (fanOn == false) {
+//      turnFanOn();
+//    }
+//  }
+//  else {
+//    if (fanOn == true) {
+//      turnFanOff();
+//      
+//    }
+//  }
 
 //  if(distance>5) {
 //    if (lightsOn == false) {
@@ -164,7 +165,7 @@ void loop()
 //    }
 //  }
 
-  Serial.println("");
+  Serial.println("}");
 }
 }
 
@@ -188,7 +189,7 @@ void getUltrasonic() {
   // but /2 because sound has at this point traveled towards and back from the object
   distance = duration * 0.034 / 2;
   
-  Serial.print(", Distance (cm): ");
+  Serial.print(", 'Distance (cm)': ");
   Serial.print(distance);
 }
 
@@ -207,9 +208,9 @@ void getDHT() {
 
   temperature = t;
 
-  Serial.print(F("Humidity (%): "));
+  Serial.print(F("'Humidity (%)': "));
   Serial.print(h);
-  Serial.print(F(", Temperature (C): "));
+  Serial.print(F(", 'Temperature (C)': "));
   Serial.print(t);  
 }
 
@@ -221,25 +222,25 @@ void getColors() {
   }
 
   // Print out the stored values for each channel
-  Serial.print(", F1 415nm (Violet): ");
+  Serial.print(", 'F1 415nm (Violet)': ");
   Serial.print(as7341.getChannel(AS7341_CHANNEL_415nm_F1));
-  Serial.print(", F2 445nm (Indigo): ");
+  Serial.print(", 'F2 445nm (Indigo)': ");
   Serial.print(as7341.getChannel(AS7341_CHANNEL_445nm_F2));
-  Serial.print(", F3 480nm (Blue): ");
+  Serial.print(", 'F3 480nm (Blue)': ");
   Serial.print(as7341.getChannel(AS7341_CHANNEL_480nm_F3));
-  Serial.print(", F4 515nm (Cyan): ");
+  Serial.print(", 'F4 515nm (Cyan)': ");
   Serial.print(as7341.getChannel(AS7341_CHANNEL_515nm_F4));
-  Serial.print(", F5 555nm (Green): ");
+  Serial.print(", 'F5 555nm (Green)': ");
   Serial.print(as7341.getChannel(AS7341_CHANNEL_555nm_F5));
-  Serial.print(", F6 590nm (Yellow): ");
+  Serial.print(", 'F6 590nm (Yellow)': ");
   Serial.print(as7341.getChannel(AS7341_CHANNEL_590nm_F6));
-  Serial.print(", F7 630nm (Orange): ");
+  Serial.print(", 'F7 630nm (Orange)': ");
   Serial.print(as7341.getChannel(AS7341_CHANNEL_630nm_F7));
-  Serial.print(", F8 680nm (Red): ");
+  Serial.print(", 'F8 680nm (Red)': ");
   Serial.print(as7341.getChannel(AS7341_CHANNEL_680nm_F8));
-  Serial.print(", Clear: ");
+  Serial.print(", 'Clear': ");
   Serial.print(as7341.getChannel(AS7341_CHANNEL_CLEAR));
-  Serial.print(", Near IR: ");
+  Serial.print(", 'Near IR': ");
   Serial.print(as7341.getChannel(AS7341_CHANNEL_NIR));
 }
 
@@ -247,13 +248,13 @@ void getTDS() {
   gravityTds.setTemperature(temperature);  // set the temperature and execute temperature compensation
   gravityTds.update();  //sample and calculate 
   tdsValue = gravityTds.getTdsValue();  // then get the value
-  Serial.print(", TDS_V: ");
+  Serial.print(", 'TDS_V': ");
   Serial.print(voltage(analogRead(TDSPIN),vplusTDS));
-  Serial.print(", TDS_Vref: ");
+  Serial.print(", 'TDS_Vref': ");
   Serial.print(vplusTDS);
-  Serial.print(", TDS_aSteps: ");
+  Serial.print(", 'TDS_aSteps': ");
   Serial.print(adcRef,0);
-  Serial.print(", PPM: ");
+  Serial.print(", 'PPM': ");
   Serial.print(tdsValue);
 }
 
@@ -268,13 +269,13 @@ float voltage(int val, int vRef) {
 
 void getPH() {
   phpin_value = analogRead(PHPIN); 
-  Serial.print(", pH_V: ");
+  Serial.print(", 'pH_V': ");
   Serial.print(voltage(phpin_value, vplusPH));
-  Serial.print(", pH_Vref: ");
+  Serial.print(", 'pH_Vref': ");
   Serial.print(vplusPH);
-  Serial.print(", ph_aSteps: ");
+  Serial.print(", 'ph_aSteps': ");
   Serial.print(adcRef,0);
-  Serial.print(", pH: ");
+  Serial.print(", 'pH': ");
   Serial.print(ph(phpin_value));
 }
 
