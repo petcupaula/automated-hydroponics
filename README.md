@@ -24,7 +24,8 @@ Automated home garden using hydroponics concepts
 * Air pump 5V (https://www.adafruit.com/product/4700) 
 * Air stone (https://www.aliexpress.com/item/32942776713.html)
 * Submersible Water pump 5V (https://www.banggood.com/DIY-Automatic-Irrigation-Module-Kit-Soil-Moisture-Detection-Automatic-Watering-Pumping-p-1338728.html, https://arduinotech.dk/shop/automatic-watering-system-diy-set-b/)
-* Camera
+* 4 x Relays
+* Camera - 5Mpixels RPi camera module
 
 ## Schematics
 
@@ -72,4 +73,18 @@ git clone https://github.com/DFRobot/GravityTDS.git
 cd ~/automated_hydroponics
 arduino-cli compile --fqbn arduino:avr:uno arduino_hydroponics/arduino_hydroponics.ino 
 arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:uno arduino_hydroponics
+
+# To communicate between Arduino and Raspberry Pi via serial, there are 
+two scripts that can be used
+# The `arduino_com.py` sends a message via serial to the Arduino, which in turn returns sensor data
+python arduino_com.py
+# The `mqtt_client.py` is an enhanced version of that, but sends the read data to an MQTT broker. (Note: certificates will be required that are not included in this repo)
+python mqtt_client.py
+
+# Camera setup
+# RPi camera setup instructions: https://www.raspberrypi.org/documentation/configuration/camera.md
+
+# Install a web interface for controlling the camera and doing timelapses
+# Install instructions: https://elinux.org/RPi-Cam-Web-Interface
+
 ```
