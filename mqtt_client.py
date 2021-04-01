@@ -56,7 +56,6 @@ if __name__ == '__main__':
                 logger.info("try to publish:{}".format(now))
                 datadict['time'] = now
                 print(datadict)
-                #mqttc.publish(topic, json.dumps({'time': now, 'value': temp}))
                 mqttc.publish(topic, json.dumps(datadict))
             time.sleep(5)
 

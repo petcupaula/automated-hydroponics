@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 
 certificate-collection/
+RPi_Cam_Web_Interface/

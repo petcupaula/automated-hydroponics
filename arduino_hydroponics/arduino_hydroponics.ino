@@ -9,8 +9,8 @@
 DHT dht(DHTPIN, DHTTYPE);
 
 // Ultrasonic sensor - distance
-#define TRIGPIN 8
-#define ECHOPIN 9
+#define TRIGPIN 9
+#define ECHOPIN 8
 long duration;
 int distance;
 
@@ -22,7 +22,7 @@ Adafruit_AS7341 as7341;
 GravityTDS gravityTds;
 float temperature = 25.0;
 float tdsValue = 0;
-float vplusTDS = 3.3; // connected to 3.3 or 5V
+float vplusTDS = 5; // connected to 3.3 or 5V
 
 // pH sensor
 #define PHPIN A0
@@ -34,11 +34,11 @@ float ph_coefficient = -5.72;//-5.23;
 float adcRef = 1024.0;
 
 // Fan
-#define FANPIN 10
+#define FANPIN 12
 bool fanOn = false;
 
 // Grow lights
-#define LIGHTPIN 11
+#define LIGHTPIN 13
 bool lightsOn = false;
 
 // Water atomizer
@@ -46,11 +46,11 @@ bool lightsOn = false;
 bool waterAtomOn = false;
 
 // Air pump
-#define AIRPIN 12
+#define AIRPIN 11
 bool airPumpOn = false;
 
 // Water pump
-#define WATERPIN 13
+#define WATERPIN 10
 bool waterPumpOn = false;
 
 void setup()
@@ -76,7 +76,7 @@ void setup()
   turnFanOff();
   
   pinMode(LIGHTPIN, OUTPUT);
-  turnLightsOff();
+  //turnLightsOn();
 
   pinMode(ATOMPIN, OUTPUT);
 
@@ -167,6 +167,11 @@ void loop()
 
   Serial.println("}");
 }
+
+//turnWaterPumpOn();
+//delay(2000);
+//turnWaterPumpOff();
+//delay(2000);
 }
 
 
