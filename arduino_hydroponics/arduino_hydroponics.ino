@@ -39,7 +39,7 @@ bool fanOn = false;
 
 // Grow lights
 #define LIGHTPIN 13
-bool lightsOn = false;
+bool lightsOn = true;
 
 // Water atomizer
 #define ATOMPIN 2
@@ -76,7 +76,7 @@ void setup()
   turnFanOff();
   
   pinMode(LIGHTPIN, OUTPUT);
-  //turnLightsOn();
+  turnLightsOn();
 
   pinMode(ATOMPIN, OUTPUT);
 
@@ -101,77 +101,72 @@ void loop()
       //Serial.print("You sent me (string): ");
       //Serial.println(data);
 
-  Serial.print("{");
-  getDHT();
-  getUltrasonic();
-  getColors();
-  getTDS();
-  getPH();
+    if (data == "READ") {
+      Serial.print("{");
+      getDHT();
+      getUltrasonic();
+      getColors();
+      getTDS();
+      getPH();
+      Serial.print(", 'airPumpOn': ");
+      Serial.print(airPumpOn);
+      Serial.print(", 'waterPumpOn': ");
+      Serial.print(waterPumpOn);
+      Serial.print(", 'waterAtomOn': ");
+      Serial.print(waterAtomOn);
+      Serial.print(", 'lightsOn': ");
+      Serial.print(lightsOn);
+      Serial.print(", 'fanOn': ");
+      Serial.print(fanOn);
+      Serial.println("}");
+    }
 
-//  if(temperature>22) {
-//    if (fanOn == false) {
-//      turnFanOn();
-//    }
-//  }
-//  else {
-//    if (fanOn == true) {
-//      turnFanOff();
-//      
-//    }
-//  }
+    if (data == "AIRPUMP") {
+      if (airPumpOn == false) {
+        turnAirPumpOn();
+      }
+      else {
+        turnAirPumpOff();
+      }
+    }
 
-//  if(distance>5) {
-//    if (lightsOn == false) {
-//      turnLightsOn();
-//    }
-//  }
-//  else {
-//    if (lightsOn == true) {
-//      turnLightsOff();
-//    }
-//  }
+    if (data == "WATERPUMP") {
+      if (waterPumpOn == false) {
+        turnWaterPumpOn();
+      }
+      else {
+        turnWaterPumpOff();
+      }
+    }
 
+    if (data == "WATERATOM") {
+      if (waterAtomOn == false) {
+        turnWaterAtomOn();
+      }
+      else {
+        turnWaterAtomOff();
+      }
+    }
 
-//  if(distance>5) {
-//    if (waterAtomOn == false) {
-//      turnWaterAtomOn();
-//    }
-//  }
-//  else {
-//    if (waterAtomOn == true) {
-//      turnWaterAtomOff();
-//    }
-//  }
+    if (data == "LIGHTS") {
+      if (lightsOn == false) {
+        turnLightsOn();
+      }
+      else {
+        turnLightsOff();
+      }
+    }
 
-//  if(distance>5) {
-//    if (airPumpOn == false) {
-//      turnAirPumpOn();
-//    }
-//  }
-//  else {
-//    if (airPumpOn == true) {
-//      turnAirPumpOff();
-//    }
-//  }
+    if (data == "FAN") {
+      if (fanOn == false) {
+        turnFanOn();
+      }
+      else {
+        turnFanOff();
+      }
+    }
+  }
 
-//  if(distance>5) {
-//    if (waterPumpOn == false) {
-//      turnWaterPumpOn();
-//    }
-//  }
-//  else {
-//    if (waterPumpOn == true) {
-//      turnWaterPumpOff();
-//    }
-//  }
-
-  Serial.println("}");
-}
-
-//turnWaterPumpOn();
-//delay(2000);
-//turnWaterPumpOff();
-//delay(2000);
 }
 
 
@@ -295,12 +290,12 @@ void turnFanOff() {
 }
 
 void turnLightsOn() {
-  digitalWrite(LIGHTPIN, LOW);
+  digitalWrite(LIGHTPIN, HIGH);
   lightsOn = true;
 }
 
 void turnLightsOff() {
-  digitalWrite(LIGHTPIN, HIGH);
+  digitalWrite(LIGHTPIN, LOW);
   lightsOn = false;
 }
 

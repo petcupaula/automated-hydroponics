@@ -14,4 +14,7 @@ if __name__ == '__main__':
     line = ser.readline().decode('utf-8').rstrip()
     print("[" + datetime.datetime.now().strftime('%m-%d-%Y_%H.%M.%S') + "] " + line)
     time.sleep(5)
+    ser.write(b"WATERATOM\n")
+    time.sleep(5)
+
 
