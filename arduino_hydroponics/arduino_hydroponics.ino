@@ -2,6 +2,7 @@
 #include <Adafruit_AS7341.h>
 #include <EEPROM.h>
 #include "GravityTDS.h"
+#include <OneWire.h>
 
 // DHT - temp & humidity
 #define DHTPIN 4
@@ -32,6 +33,10 @@ float ph_offset = 21.34;//20.61;
 float ph_coefficient = -5.72;//-5.23;
 
 float adcRef = 1024.0;
+
+// Water temperature using DS18S20
+#define TEMPPIN 7
+OneWire ds(TEMPPIN);
 
 // Fan
 #define FANPIN 12
@@ -108,6 +113,7 @@ void loop()
       getColors();
       getTDS();
       getPH();
+      getWaterTemp();
       Serial.print(", 'airPumpOn': ");
       Serial.print(airPumpOn);
       Serial.print(", 'waterPumpOn': ");
@@ -277,6 +283,53 @@ void getPH() {
   Serial.print(adcRef,0);
   Serial.print(", 'pH': ");
   Serial.print(ph(phpin_value));
+}
+
+void getWaterTemp(){
+  //returns the temperature from one DS18S20 in DEG Celsius
+
+  byte data[12];
+  byte addr[8];
+
+  if ( !ds.search(addr)) {
+      //no more sensors on chain, reset search
+      ds.reset_search();
+      return -1000;
+  }
+
+  if ( OneWire::crc8( addr, 7) != addr[7]) {
+      //Serial.println("CRC is not valid!");
+      return -1000;
+  }
+
+  if ( addr[0] != 0x10 && addr[0] != 0x28) {
+      //Serial.print("Device is not recognized");
+      return -1000;
+  }
+
+  ds.reset();
+  ds.select(addr);
+  ds.write(0x44,1); // start conversion, with parasite power on at the end
+
+  byte present = ds.reset();
+  ds.select(addr);
+  ds.write(0xBE); // Read Scratchpad
+
+
+  for (int i = 0; i < 9; i++) { // we need 9 bytes
+    data[i] = ds.read();
+  }
+
+  ds.reset_search();
+
+  byte MSB = data[1];
+  byte LSB = data[0];
+
+  float tempRead = ((MSB << 8) | LSB); //using two's compliment
+  float TemperatureSum = tempRead / 16;
+
+  Serial.print(F(", 'Water Temperature (C)': "));
+  Serial.print(TemperatureSum);
 }
 
 void turnFanOn() {
