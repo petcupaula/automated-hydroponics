@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sys
+import glob
 import serial
 from Adafruit_IO import MQTTClient
 import config
@@ -24,7 +25,8 @@ def message(client, feed_id, payload):
     ser.write((payload+"\n").encode('ascii'))
 
 if __name__ == '__main__':
-    ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+    ttys = glob.glob('/dev/ttyAC*')
+    ser = serial.Serial(ttys[0], 9600, timeout=1)
     ser.flush()
 
     client = MQTTClient(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
