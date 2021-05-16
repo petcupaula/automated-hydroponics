@@ -109,3 +109,10 @@ ps aux | grep python
 
 # That is it.
 ```
+
+## Dashboard and command center
+
+Example created in Adafruit IO:
+
+![AIO_dash](img/aio_cmd_center.png?raw=true "AIO_dash")
+
