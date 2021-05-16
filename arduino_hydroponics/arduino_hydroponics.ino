@@ -108,8 +108,8 @@ void loop()
 
     if (data == "READ") {
       Serial.print("{");
-      getDHT();
       getUltrasonic();
+      getDHT();
       getColors();
       getTDS();
       getPH();
@@ -195,7 +195,7 @@ void getUltrasonic() {
   // but /2 because sound has at this point traveled towards and back from the object
   distance = duration * 0.034 / 2;
   
-  Serial.print(", 'Distance (cm)': ");
+  Serial.print("'Distance (cm)': ");
   Serial.print(distance);
 }
 
@@ -214,7 +214,7 @@ void getDHT() {
 
   temperature = t;
 
-  Serial.print(F("'Humidity (%)': "));
+  Serial.print(F(", 'Humidity (%)': "));
   Serial.print(h);
   Serial.print(F(", 'Temperature (C)': "));
   Serial.print(t);  
