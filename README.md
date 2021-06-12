@@ -25,7 +25,7 @@ Automated home garden using hydroponics concepts
 * Air stone (https://www.aliexpress.com/item/32942776713.html)
 * Submersible Water pump 5V (https://www.banggood.com/DIY-Automatic-Irrigation-Module-Kit-Soil-Moisture-Detection-Automatic-Watering-Pumping-p-1338728.html, https://arduinotech.dk/shop/automatic-watering-system-diy-set-b/)
 * 4 x Relays
-* Camera - 5MP RPi camera module (https://www.elextra.dk/p/GS/H37933)
+* Camera - 5MP RPi camera module (https://www.elextra.dk/p/GS/H37933), or even better, a wide-lense camera module (https://www.aliexpress.com/item/32714486681.html)
 * Waterproof temperature sensor (https://wiki.dfrobot.com/Waterproof_DS18B20_Digital_Temperature_Sensor__SKU_DFR0198_)
 
 ## Schematics
